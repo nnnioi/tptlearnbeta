@@ -1,0 +1,155 @@
+<head>
+    <style>
+        #container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        #staffImg {
+            max-height: 60vh;
+        }
+        #valves {
+            display: flex;
+            justify-content: center;
+        }
+        .valveImgs {
+            max-width: 20%;
+        }
+        #noteimg {
+            position: absolute;
+            left: 50%;
+            bottom: 50%;
+            max-height: 9vh;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        function closeValve(valveclosed, valveopen) {
+            let closed = document.getElementById(valveclosed);
+            let open = document.getElementById(valveopen);
+            open.style.display = 'none';
+            closed.style.display = 'inline';
+        }
+        function openValve(valveopen, valveclosed) {
+            let closed = document.getElementById(valveclosed);
+            let open = document.getElementById(valveopen);
+            open.style.display = 'inline';
+            closed.style.display = 'none';
+        }
+        function chooseNote() {
+            const keys = Object.keys(noteObject);
+            const randomIndex = Math.floor(Math.random() * keys.length);
+            const note = keys[randomIndex];
+            currentNote = note;
+
+            document.getElementById("noteimg").style.top = noteObject[note];
+        }
+        let currentNote;
+        function checkKeys() {
+            console.log(valvesDown)
+            let noteCombo = valvesObject[currentNote];
+            let isCorrect = true;
+            for (let i = 0; i < noteCombo.length; i++) {
+                if (noteCombo[i] != valvesDown[i]) {
+                    isCorrect = false;
+                }
+            }
+            if (isCorrect == true) {
+                score++;
+                document.getElementById('score').innerHTML = score;
+            }
+            else {
+                wrong++;
+                document.getElementById('wrong').innerHTML = wrong;
+            }
+            chooseNote();
+            // if blah blah == blah bl { chooseNote(); }
+        }
+
+        let score = 0;
+        let wrong = 0;
+        const noteObject = {
+            //C4: "42vh", //idk?
+            D4: "40vh",
+            E4: "37.5vh",
+            F4: "34.5vh",
+            G4: "31.5vh",
+            A4: "29vh",
+            B4: "26vh",
+            C5: "23.3vh",
+            D5: "20.5vh",
+            E5: "17.5vh",
+            F5: "15vh",
+            G5: "12vh"
+        };
+         const valvesObject = {
+            //C4: [0,0,0],
+            D4: [1,0,3],
+            E4: [1,2,0],
+            F4: [1,0,0],
+            G4: [0,0,0],
+            A4: [1,2,0],
+            B4: [0,2,0],
+            C5: [0,0,0],
+            D5: [1,0,3],
+            E5: [1,2,0],
+            F5: [1,0,0],
+            G5: [0,0,0]
+        };
+        const valvesDown = [0, 0, 0];
+      
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'j') {
+                closeValve('valveclosed1', 'valveopen1');
+                valvesDown[0] = '1';
+            }
+            if (event.key === 'k') {
+                closeValve('valveclosed2', 'valveopen2');
+                valvesDown[1] = '2';
+            }
+            if (event.key === 'l') {
+                closeValve('valveclosed3', 'valveopen3');
+                valvesDown[2] = '3';
+            }
+            if (event.key === " ") {
+                // alert(valvesDown);
+                checkKeys();
+            }
+        });
+      
+        document.addEventListener('keyup', (event) => {
+            if (event.key === 'j') {
+                openValve('valveopen1', 'valveclosed1');
+                valvesDown[0] = 0;
+            }
+            if (event.key === 'k') {
+                openValve('valveopen2', 'valveclosed2');
+                valvesDown[1] = 0;
+            }
+            if (event.key === 'l') {
+                openValve('valveopen3', 'valveclosed3');
+                valvesDown[2] = 0;
+            }
+        });
+
+        document.addEventListener("DOMContentLoaded", (event) => {
+            chooseNote();
+        })
+
+    </script>
+    <div id="container">
+        <img id="staffImg" src="treble-clef-staff-8e581b.jpeg" alt="Treble Clef">
+        <img id="noteimg" src="wholenote.png" alt="Whole Note">
+        <div id="valves">
+            <img class="valveImgs" id="valveopen1" src="valveopen.png" alt="Valve Open 1">
+            <img class="valveImgs" id="valveclosed1" src="valveclosed.png" alt="Valve Closed 1" style="display: none;">
+            <img class="valveImgs" id="valveopen2" src="valveopen.png" alt="Valve Open 2">
+            <img class="valveImgs" id="valveclosed2" src="valveclosed.png" alt="Valve Closed 2" style="display: none;">
+            <img class="valveImgs" id="valveopen3" src="valveopen.png" alt="Valve Open 3">
+            <img class="valveImgs" id="valveclosed3" src="valveclosed.png" alt="Valve Closed 3" style="display: none;">
+        </div> 
+        <p>Correct: <span id="score">0</span></p>
+        <p>Incorrect: <span id="wrong">0</span></p>
+    </div>
+</body>
